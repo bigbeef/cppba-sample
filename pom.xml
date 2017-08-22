@@ -25,5 +25,6 @@
 
   <modules>
     <module>cppba-async</module>
+    <module>cppba-schedule</module>
   </modules>
 </project>
