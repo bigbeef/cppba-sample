@@ -26,5 +26,6 @@
   <modules>
     <module>cppba-async</module>
     <module>cppba-schedule</module>
+    <module>cppba-jetty</module>
   </modules>
 </project>
