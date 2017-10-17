@@ -27,5 +27,6 @@
     <module>cppba-async</module>
     <module>cppba-schedule</module>
     <module>cppba-jetty</module>
+      <module>cppba-post</module>
   </modules>
 </project>
