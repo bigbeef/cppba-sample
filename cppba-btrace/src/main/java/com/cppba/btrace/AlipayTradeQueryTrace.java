@@ -2,10 +2,15 @@ package com.cppba.btrace;
 
 import com.sun.btrace.BTraceUtils;
 import com.sun.btrace.annotations.BTrace;
+import com.sun.btrace.annotations.Duration;
 import com.sun.btrace.annotations.Kind;
 import com.sun.btrace.annotations.Location;
 import com.sun.btrace.annotations.OnMethod;
+import com.sun.btrace.annotations.ProbeClassName;
+import com.sun.btrace.annotations.ProbeMethodName;
 import com.sun.btrace.annotations.Return;
+import com.sun.btrace.annotations.TargetInstance;
+import com.sun.btrace.annotations.TargetMethodOrField;
 
 /**
  * @author winfed
@@ -16,9 +21,6 @@ public class AlipayTradeQueryTrace {
 
     /**
      * 进入方法的时候，捕获入参
-     * example:
-     * === 进入方法时入参 ↓ ===
-     * outTradeNo = [null]
      *
      * @param outTradeNo 订单编号
      */
@@ -36,29 +38,6 @@ public class AlipayTradeQueryTrace {
 
     /**
      * 返回的时候,捕获入参编号和返回值
-     * example:
-     * === 方法执行完入参 ↓ ===
-     * outTradeNo = [12345]
-     * <p>
-     * === 返回值 ↓ ===
-     * code = [10000]
-     * msg = [Success]
-     * subCode = [null]
-     * subMsg = [null]
-     * tradeNo = [2017102321001004040200179347]
-     * outTradeNo = [12345]
-     * buyerLogonId = [fxb***@sandbox.com]
-     * tradeStatus = [TRADE_CLOSED]
-     * totalAmount = [0.01]
-     * receiptAmount = [0.00]
-     * buyerPayAmount = [0.00]
-     * poinAmount = [0.00]
-     * invoiceAmount = [0.00]
-     * sendPayDate = [null]
-     * storeId = [null]
-     * terminalId = [null]
-     * storeName = [null]
-     * buyerUserId = [2088102169058046]
      *
      * @param outTradeNo 订单编号
      * @param result     返回值
@@ -68,9 +47,17 @@ public class AlipayTradeQueryTrace {
             method = "doTradeQuery",
             location = @Location(value = Kind.RETURN)
     )
-    public static void doTradeQueryTraceReturn(String outTradeNo, @Return Object result) {
+    public static void doTradeQueryTraceReturn(
+            String outTradeNo, @Return Object result, @ProbeClassName String probeClassName,
+            @ProbeMethodName String probeMethodName, @Duration long duration) {
         String alipayResponse = "com.cppba.alipay.base.response.AlipayResponse";
         String alipayTradeQueryResponse = "com.cppba.alipay.response.AlipayTradeQueryResponse";
+
+        BTraceUtils.println("=== 执行详情 ↓ ===");
+        BTraceUtils.println("调用类:[" + probeClassName + "]," +
+                "调用方法:[" + probeMethodName + "]," +
+                "执行时长:[" + duration / 1000000 + "] ms");
+        BTraceUtils.println();
 
         BTraceUtils.println("=== 方法执行完入参 ↓ ===");
         BTraceUtils.println("outTradeNo = [" + outTradeNo + "]");
@@ -99,4 +86,31 @@ public class AlipayTradeQueryTrace {
         BTraceUtils.println();
     }
 
+    /**
+     * 捕获被调用时
+     * @param probeClassName 发起调用类
+     * @param probeMethodName 发起调用方法
+     * @param targetInstance 被调用类
+     * @param targetMethodOrField 被调用方法
+     */
+    @OnMethod(
+            clazz = "/com\\.cppba\\..*/",
+            method = "/.*/",
+            location = @Location(
+                    value = Kind.CALL,
+                    clazz = "/com\\.cppba\\..*/",
+                    method = "createResponse")
+    )
+    public static void doTradeQueryTraceCall(
+            @ProbeClassName String probeClassName,
+            @ProbeMethodName String probeMethodName,
+            @TargetInstance Object targetInstance,
+            @TargetMethodOrField String targetMethodOrField) {
+        BTraceUtils.println("=== 执行详情 ↓ ===");
+        BTraceUtils.println("调用类:[" + probeClassName + "]," +
+                "调用方法:[" + probeMethodName + "]," +
+                "执行类:[" + (targetInstance==null?"null":BTraceUtils.str(BTraceUtils.classOf(targetInstance))) + "]," +
+                "执行方法:[" + targetMethodOrField + "]");
+        BTraceUtils.println();
+    }
 }
