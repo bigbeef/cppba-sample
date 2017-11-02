@@ -1,0 +1,102 @@
+package com.cppba.btrace;
+
+import com.sun.btrace.BTraceUtils;
+import com.sun.btrace.annotations.BTrace;
+import com.sun.btrace.annotations.Kind;
+import com.sun.btrace.annotations.Location;
+import com.sun.btrace.annotations.OnMethod;
+import com.sun.btrace.annotations.Return;
+
+/**
+ * @author winfed
+ * @create 2017-11-02 10:34
+ */
+@BTrace
+public class AlipayTradeQueryTrace {
+
+    /**
+     * 进入方法的时候，捕获入参
+     * example:
+     * === 进入方法时入参 ↓ ===
+     * outTradeNo = [null]
+     *
+     * @param outTradeNo 订单编号
+     */
+    @OnMethod(
+            clazz = "com.cppba.alipay.controller.AlipayTradeQueryController",
+            method = "doTradeQuery",
+            location = @Location(value = Kind.ENTRY)
+    )
+    public static void doTradeQueryTraceEntry(String outTradeNo) {
+
+        BTraceUtils.println("=== 进入方法时入参 ↓ ===");
+        BTraceUtils.println("outTradeNo = [" + outTradeNo + "]");
+        BTraceUtils.println();
+    }
+
+    /**
+     * 返回的时候,捕获入参编号和返回值
+     * example:
+     * === 方法执行完入参 ↓ ===
+     * outTradeNo = [12345]
+     * <p>
+     * === 返回值 ↓ ===
+     * code = [10000]
+     * msg = [Success]
+     * subCode = [null]
+     * subMsg = [null]
+     * tradeNo = [2017102321001004040200179347]
+     * outTradeNo = [12345]
+     * buyerLogonId = [fxb***@sandbox.com]
+     * tradeStatus = [TRADE_CLOSED]
+     * totalAmount = [0.01]
+     * receiptAmount = [0.00]
+     * buyerPayAmount = [0.00]
+     * poinAmount = [0.00]
+     * invoiceAmount = [0.00]
+     * sendPayDate = [null]
+     * storeId = [null]
+     * terminalId = [null]
+     * storeName = [null]
+     * buyerUserId = [2088102169058046]
+     *
+     * @param outTradeNo 订单编号
+     * @param result     返回值
+     */
+    @OnMethod(
+            clazz = "com.cppba.alipay.controller.AlipayTradeQueryController",
+            method = "doTradeQuery",
+            location = @Location(value = Kind.RETURN)
+    )
+    public static void doTradeQueryTraceReturn(String outTradeNo, @Return Object result) {
+        String alipayResponse = "com.cppba.alipay.base.response.AlipayResponse";
+        String alipayTradeQueryResponse = "com.cppba.alipay.response.AlipayTradeQueryResponse";
+
+        BTraceUtils.println("=== 方法执行完入参 ↓ ===");
+        BTraceUtils.println("outTradeNo = [" + outTradeNo + "]");
+        BTraceUtils.println();
+
+        BTraceUtils.println("=== 返回值 ↓ ===");
+        BTraceUtils.println("code = [" + BTraceUtils.get(BTraceUtils.field(alipayResponse, "code"), result) + "]");
+        BTraceUtils.println("msg = [" + BTraceUtils.get(BTraceUtils.field(alipayResponse, "msg"), result) + "]");
+        BTraceUtils.println("subCode = [" + BTraceUtils.get(BTraceUtils.field(alipayResponse, "subCode"), result) + "]");
+        BTraceUtils.println("subMsg = [" + BTraceUtils.get(BTraceUtils.field(alipayResponse, "subMsg"), result) + "]");
+        BTraceUtils.println("tradeNo = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "tradeNo"), result) + "]");
+        BTraceUtils.println("outTradeNo = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "outTradeNo"), result) + "]");
+        BTraceUtils.println("buyerLogonId = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "buyerLogonId"), result) + "]");
+        BTraceUtils.println("tradeStatus = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "tradeStatus"), result) + "]");
+        BTraceUtils.println("totalAmount = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "totalAmount"), result) + "]");
+        BTraceUtils.println("receiptAmount = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "receiptAmount"), result) + "]");
+        BTraceUtils.println("buyerPayAmount = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "buyerPayAmount"), result) + "]");
+        BTraceUtils.println("poinAmount = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "poinAmount"), result) + "]");
+        BTraceUtils.println("invoiceAmount = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "invoiceAmount"), result) + "]");
+        BTraceUtils.println("sendPayDate = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "sendPayDate"), result) + "]");
+        BTraceUtils.println("storeId = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "storeId"), result) + "]");
+        BTraceUtils.println("terminalId = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "terminalId"), result) + "]");
+        // BTraceUtils.println("fundBillList = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "fundBillList"), result) + "]");
+        BTraceUtils.println("storeName = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "storeName"), result) + "]");
+        BTraceUtils.println("buyerUserId = [" + BTraceUtils.get(BTraceUtils.field(alipayTradeQueryResponse, "buyerUserId"), result) + "]");
+        BTraceUtils.println();
+    }
+
+}
