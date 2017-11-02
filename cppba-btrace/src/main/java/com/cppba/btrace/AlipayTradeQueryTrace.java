@@ -88,9 +88,10 @@ public class AlipayTradeQueryTrace {
 
     /**
      * 捕获被调用时
-     * @param probeClassName 发起调用类
-     * @param probeMethodName 发起调用方法
-     * @param targetInstance 被调用类
+     *
+     * @param probeClassName      发起调用类
+     * @param probeMethodName     发起调用方法
+     * @param targetInstance      被调用类
      * @param targetMethodOrField 被调用方法
      */
     @OnMethod(
@@ -109,7 +110,7 @@ public class AlipayTradeQueryTrace {
         BTraceUtils.println("=== 执行详情 ↓ ===");
         BTraceUtils.println("调用类:[" + probeClassName + "]," +
                 "调用方法:[" + probeMethodName + "]," +
-                "执行类:[" + (targetInstance==null?"null":BTraceUtils.str(BTraceUtils.classOf(targetInstance))) + "]," +
+                "执行类:[" + (targetInstance == null ? "null" : BTraceUtils.str(BTraceUtils.classOf(targetInstance))) + "]," +
                 "执行方法:[" + targetMethodOrField + "]");
         BTraceUtils.println();
     }
