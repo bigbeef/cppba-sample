@@ -64,6 +64,7 @@
         <!--<module>cppba-jetty</module>-->
         <!--<module>cppba-post</module>-->
         <!--<module>cppba-btrace</module>-->
-        <module>cppba-rabbitmq</module>
+        <!--<module>cppba-rabbitmq</module>-->
+        <module>cppba-threadpool</module>
     </modules>
 </project>
