@@ -13,6 +13,7 @@ import com.sun.btrace.annotations.TargetInstance;
 import com.sun.btrace.annotations.TargetMethodOrField;
 
 /**
+ * jvm调试插件btrace使用demo
  * @author winfed
  * @create 2017-11-02 10:34
  */
