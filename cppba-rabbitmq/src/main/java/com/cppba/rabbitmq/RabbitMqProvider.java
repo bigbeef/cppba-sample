@@ -1,10 +1,12 @@
 package com.cppba.rabbitmq;
 
+import com.cppba.bean.MessagePayload;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 /**
  * @author winfed
@@ -19,11 +21,12 @@ public class RabbitMqProvider {
     public RabbitMqProvider(AmqpAdmin amqpAdmin, AmqpTemplate amqpTemplate) {
         this.amqpAdmin = amqpAdmin;
         this.amqpTemplate = amqpTemplate;
-        amqpAdmin.declareQueue(new Queue("print"));
-        amqpAdmin.declareQueue(new Queue("say"));
     }
 
     public void send(String key, String message) {
-        amqpTemplate.convertAndSend(key, message);
+        MessagePayload messagePlayLoad = new MessagePayload();
+        messagePlayLoad.setId(UUID.randomUUID().toString());
+        messagePlayLoad.setMessage(message);
+        amqpTemplate.convertAndSend(key, messagePlayLoad);
     }
 }

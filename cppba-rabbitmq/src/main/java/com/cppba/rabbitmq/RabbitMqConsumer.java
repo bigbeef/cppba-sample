@@ -1,8 +1,9 @@
 package com.cppba.rabbitmq;
 
+import com.cppba.bean.MessagePayload;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,28 +14,28 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class RabbitMqConsumer {
 
-    @RabbitListener(queues = "say")
-    public void onMessageSay1(Message message) {
+    @RabbitListener(queues = "say", containerFactory = "rabbitListenerContainerFactory")
+    public void onMessageSay1(@Payload MessagePayload messagePayload) {
         try{
-            log.warn("消费者:{},接收到消息:{}","say1",message);
+            log.warn("消费者:{},接收到消息:{},{}","say1",messagePayload.getId(),messagePayload.getMessage());
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    @RabbitListener(queues = "say")
-    public void onMessageSay2(Message message) {
-        try{
-            log.warn("消费者:{},接收到消息:{}","say2",message);
-        }catch(Exception e){
+    @RabbitListener(queues = "say" , containerFactory = "rabbitListenerContainerFactory")
+    public void onMessageSay2(@Payload MessagePayload messagePlayLoad) {
+        try {
+            log.warn("消费者:{},接收到消息:{},{}", "say1", messagePlayLoad.getId(), messagePlayLoad.getMessage());
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    @RabbitListener(queues = "print")
-    public void onMessagePrint(Message message) {
+    @RabbitListener(queues = "print" , containerFactory = "rabbitListenerContainerFactory")
+    public void onMessagePrint(@Payload MessagePayload messagePlayLoad) {
         try{
-            log.warn("消费者:{},接收到消息:{}","print",message);
+            log.warn("消费者:{},接收到消息:{},{}","say1",messagePlayLoad.getId(), messagePlayLoad.getMessage());
         }catch(Exception e){
             e.printStackTrace();
         }
