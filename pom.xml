@@ -59,6 +59,7 @@
     </build>
 
     <modules>
+        <module>cppba-algorithm</module>
         <!--<module>cppba-async</module>-->
         <!--<module>cppba-schedule</module>-->
         <!--<module>cppba-jetty</module>-->
