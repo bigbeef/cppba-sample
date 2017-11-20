@@ -66,6 +66,7 @@
         <!--<module>cppba-post</module>-->
         <!--<module>cppba-btrace</module>-->
         <!--<module>cppba-rabbitmq</module>-->
-        <module>cppba-threadpool</module>
+        <!--<module>cppba-threadpool</module>-->
+        <module>cppba-jdbc</module>
     </modules>
 </project>
