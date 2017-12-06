@@ -60,6 +60,7 @@
 
     <modules>
         <module>cppba-algorithm</module>
+        <!--<module>cppba-modelmapper</module>-->
         <!--<module>cppba-async</module>-->
         <!--<module>cppba-schedule</module>-->
         <!--<module>cppba-jetty</module>-->
@@ -67,6 +68,6 @@
         <!--<module>cppba-btrace</module>-->
         <!--<module>cppba-rabbitmq</module>-->
         <!--<module>cppba-threadpool</module>-->
-        <module>cppba-jdbc</module>
+        <!--<module>cppba-jdbc</module>-->
     </modules>
 </project>
