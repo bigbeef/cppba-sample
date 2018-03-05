@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * @author winfed
  * @create 2017-11-17 16:05
- * @deprecated  https://www.nowcoder.net/pat/6/problem/4055
+ * https://www.nowcoder.net/pat/6/problem/4055
  */
 public class Program1019 {
 
