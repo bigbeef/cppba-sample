@@ -12,12 +12,15 @@ import java.util.Arrays;
  */
 public class HeapSort {
     public static void main(String[] args) {
-        Integer length = 100;
+        long startMillis = System.currentTimeMillis();
+        Integer length = 8000;
         Integer[] arr = MockUtils.mockNumber(length);
         System.out.println("sort1,before:" + Arrays.toString(arr));
         heapSort(arr);
         System.out.println("sort1,after:" + Arrays.toString(arr));
         System.out.println("isSortAsc:" + AssertUtils.isSortAsc(arr, length));
+        long endMillis = System.currentTimeMillis();
+        System.out.println("用时:" + (endMillis - startMillis) +"ms");
     }
 
     /**
