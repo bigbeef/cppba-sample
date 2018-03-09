@@ -18,8 +18,8 @@
         <java.version>1.8</java.version>
         <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
         <btrace.version>1.2.3</btrace.version>
+        <aip.version>4.1.1</aip.version>
     </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -33,6 +33,12 @@
                 <groupId>com.sun.tools.btrace</groupId>
                 <artifactId>btrace-boot</artifactId>
                 <version>${btrace.version}</version>
+            </dependency>
+            <!--百度 AI 开发平台-->
+            <dependency>
+                <groupId>com.baidu.aip</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>${aip.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -59,7 +65,8 @@
     </build>
 
     <modules>
-        <module>cppba-algorithm</module>
+        <!--<module>cppba-algorithm</module>-->
+        <module>cppba-baidu-aip</module>
         <!--<module>cppba-modelmapper</module>-->
         <!--<module>cppba-async</module>-->
         <!--<module>cppba-schedule</module>-->
