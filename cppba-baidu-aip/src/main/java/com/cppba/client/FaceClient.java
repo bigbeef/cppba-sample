@@ -1,11 +1,9 @@
 package com.cppba.client;
 
 import com.baidu.aip.face.AipFace;
-import org.apache.commons.io.FileUtils;
+import com.cppba.util.Images;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -38,18 +36,18 @@ public class FaceClient {
         HashMap<String, String> options = new HashMap<>();
         byte[][] imageBytes = new byte[2][];
         try {
-            File file1 = FileUtils.toFile(new URL(imageUrl1));
-            imageBytes[0] = FileUtils.readFileToByteArray(file1);
+            String format = imageUrl1.substring(imageUrl1.lastIndexOf(".") + 1);
+            imageBytes[0] = Images.getByte(imageUrl1, format);
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            File file2 = FileUtils.toFile(new URL(imageUrl2));
-            imageBytes[1] = FileUtils.readFileToByteArray(file2);
+            String format = imageUrl2.substring(imageUrl1.lastIndexOf(".") + 1);
+            imageBytes[1] = Images.getByte(imageUrl2, format);
         } catch (Exception e) {
             e.printStackTrace();
         }
         JSONObject match = aipFace.match(imageBytes, options);
-        System.out.println(match);
+        System.out.println(match.toString());
     }
 }
