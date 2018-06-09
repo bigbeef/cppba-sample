@@ -10,22 +10,25 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
+        <version>2.0.2.RELEASE</version>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
+        <spring-boot.version>2.0.2.RELEASE</spring-boot.version>
         <btrace.version>1.2.3</btrace.version>
         <aip.version>4.1.1</aip.version>
+        <kafka.version>0.10.0.0</kafka.version>
+        <ons-sasl-client.version>0.1</ons-sasl-client.version>
+        <spring-kafka.version>2.1.6.RELEASE</spring-kafka.version>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>io.spring.platform</groupId>
                 <artifactId>platform-bom</artifactId>
-                <version>Brussels-SR5</version>
+                <version>Brussels-SR10</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -39,6 +42,22 @@
                 <groupId>com.baidu.aip</groupId>
                 <artifactId>java-sdk</artifactId>
                 <version>${aip.version}</version>
+            </dependency>
+            <!--aliyun kafka-->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.openservices</groupId>
+                <artifactId>ons-sasl-client</artifactId>
+                <version>${ons-sasl-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring-kafka.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -66,7 +85,7 @@
 
     <modules>
         <!--<module>cppba-algorithm</module>-->
-        <module>cppba-baidu-aip</module>
+        <!--<module>cppba-baidu-aip</module>-->
         <!--<module>cppba-modelmapper</module>-->
         <!--<module>cppba-async</module>-->
         <!--<module>cppba-schedule</module>-->
@@ -76,5 +95,6 @@
         <!--<module>cppba-rabbitmq</module>-->
         <!--<module>cppba-threadpool</module>-->
         <!--<module>cppba-jdbc</module>-->
+        <module>cppba-kafka</module>
     </modules>
 </project>
