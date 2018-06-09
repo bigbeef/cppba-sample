@@ -4,7 +4,11 @@ import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 
 import java.util.Properties;
 
@@ -15,16 +19,15 @@ import java.util.Properties;
 @Configuration
 public class KafkaProducerConfiguration extends KafkaConfiguration {
 
-    public Properties getKafkaProducerProperties() {
+    private Properties getKafkaProducerProperties() {
         //设置sasl文件的路径
         configureSasl();
-
         Properties props = new Properties();
         //设置接入点，请通过控制台获取对应Topic的接入点
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
         //设置SSL根证书的路径，请记得将XXX修改为自己的路径
         //与sasl路径类似，该文件也不能被打包到jar中
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, sslTruststoreLocation);
+        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, kafkaProperties.getSslTruststoreLocation());
         //根证书store的密码，保持不变
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "KafkaOnsClient");
         //接入协议，目前支持使用SASL_SSL协议接入
@@ -37,5 +40,16 @@ public class KafkaProducerConfiguration extends KafkaConfiguration {
         //请求的最长等待时间
         props.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 30 * 1000);
         return props;
+    }
+
+    private ProducerFactory getProducerFactory(){
+        return new DefaultKafkaProducerFactory(getKafkaProducerProperties());
+    }
+
+    @Bean
+    public KafkaTemplate getKafkaTemplate(){
+        KafkaTemplate kafkaTemplate = new KafkaTemplate(getProducerFactory(), false);
+        kafkaTemplate.setDefaultTopic(kafkaProperties.getTopic());
+        return kafkaTemplate;
     }
 }
