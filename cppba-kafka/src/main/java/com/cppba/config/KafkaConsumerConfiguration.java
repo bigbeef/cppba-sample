@@ -1,11 +1,17 @@
 package com.cppba.config;
 
+import com.cppba.listener.ConsumerMessageListener;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.KafkaMessageListenerContainer;
+import org.springframework.kafka.listener.config.ContainerProperties;
 
 import java.util.Properties;
 
@@ -32,18 +38,34 @@ public class KafkaConsumerConfiguration extends KafkaConfiguration {
         props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
         //SASL鉴权方式，保持不变
         props.put(SaslConfigs.SASL_MECHANISM, "ONS");
-        //两次poll之间的最大允许间隔
-        //请不要改得太大，服务器会掐掉空闲连接，不要超过30000
-        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 25000);
-        //每次poll的最大数量
-        //注意该值不要改得太大，如果poll太多数据，而不能在下次poll之前消费完，则会触发一次负载均衡，产生卡顿
-        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 30);
-        //消息的反序列化方式
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         //当前消费实例所属的消费组，请在控制台申请之后填写
         //属于同一个组的消费实例，会负载消费消息
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getGroupId());
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);
+        //两次poll之间的最大允许间隔
+        //请不要改得太大，服务器会掐掉空闲连接，不要超过30000
+        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 25000);
+        //消息的反序列化方式
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+
         return props;
     }
+
+    @Bean(initMethod = "doStart")
+    public KafkaMessageListenerContainer getKafkaMessageListenerContainer(){
+        return new KafkaMessageListenerContainer(getKafkaConsumerFactory(), getContainerProperties());
+    }
+
+    private ConsumerFactory getKafkaConsumerFactory(){
+        return new DefaultKafkaConsumerFactory(getKafkaConsumerProperties());
+    }
+
+    private ContainerProperties getContainerProperties(){
+        ContainerProperties containerProperties = new ContainerProperties(kafkaProperties.getTopic());
+        containerProperties.setMessageListener(new ConsumerMessageListener());
+        return containerProperties;
+    }
+
 }
