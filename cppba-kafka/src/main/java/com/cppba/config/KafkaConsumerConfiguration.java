@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.AbstractMessageListenerContainer;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.config.ContainerProperties;
 
@@ -41,7 +42,7 @@ public class KafkaConsumerConfiguration extends KafkaConfiguration {
         //当前消费实例所属的消费组，请在控制台申请之后填写
         //属于同一个组的消费实例，会负载消费消息
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getGroupId());
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);
         //两次poll之间的最大允许间隔
         //请不要改得太大，服务器会掐掉空闲连接，不要超过30000
@@ -65,6 +66,7 @@ public class KafkaConsumerConfiguration extends KafkaConfiguration {
     private ContainerProperties getContainerProperties(){
         ContainerProperties containerProperties = new ContainerProperties(kafkaProperties.getTopic());
         containerProperties.setMessageListener(new ConsumerMessageListener());
+        containerProperties.setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL_IMMEDIATE);
         return containerProperties;
     }
 
