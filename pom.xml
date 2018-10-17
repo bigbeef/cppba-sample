@@ -10,13 +10,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
+        <version>2.0.1.RELEASE</version>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.0.1.RELEASE</spring-boot.version>
         <btrace.version>1.2.3</btrace.version>
         <aip.version>4.1.1</aip.version>
         <ons-sasl-client.version>0.1</ons-sasl-client.version>
@@ -26,7 +26,7 @@
             <dependency>
                 <groupId>io.spring.platform</groupId>
                 <artifactId>platform-bom</artifactId>
-                <version>Cairo-SR2</version>
+                <version>Cairo-RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -72,7 +72,7 @@
     </build>
 
     <modules>
-        <!--<module>cppba-algorithm</module>-->
+        <module>cppba-algorithm</module>
         <!--<module>cppba-baidu-aip</module>-->
         <!--<module>cppba-modelmapper</module>-->
         <!--<module>cppba-async</module>-->
@@ -80,7 +80,7 @@
         <!--<module>cppba-jetty</module>-->
         <!--<module>cppba-post</module>-->
         <!--<module>cppba-btrace</module>-->
-        <module>cppba-rabbitmq</module>
+        <!--<module>cppba-rabbitmq</module>-->
         <!--<module>cppba-threadpool</module>-->
         <!--<module>cppba-jdbc</module>-->
         <!--<module>cppba-kafka</module>-->
