@@ -73,6 +73,7 @@
 
     <modules>
         <module>cppba-algorithm</module>
+        <module>cppba-elasticsearch</module>
         <!--<module>cppba-baidu-aip</module>-->
         <!--<module>cppba-modelmapper</module>-->
         <!--<module>cppba-async</module>-->
