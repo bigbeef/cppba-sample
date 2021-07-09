@@ -10,23 +10,24 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.1.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        <spring-boot.version>2.0.1.RELEASE</spring-boot.version>
+        <java.version>11</java.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
         <btrace.version>1.2.3</btrace.version>
         <aip.version>4.1.1</aip.version>
         <ons-sasl-client.version>0.1</ons-sasl-client.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!-- spring-boot -->
             <dependency>
-                <groupId>io.spring.platform</groupId>
-                <artifactId>platform-bom</artifactId>
-                <version>Cairo-RELEASE</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -47,6 +48,11 @@
                 <artifactId>ons-sasl-client</artifactId>
                 <version>${ons-sasl-client.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.7.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -54,6 +60,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
         </dependency>
     </dependencies>
 
@@ -64,8 +74,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -73,7 +83,8 @@
 
     <modules>
         <module>cppba-algorithm</module>
-        <module>cppba-elasticsearch</module>
+        <module>cppba-selenium</module>
+        <!--        <module>cppba-elasticsearch</module>-->
         <!--<module>cppba-baidu-aip</module>-->
         <!--<module>cppba-modelmapper</module>-->
         <!--<module>cppba-async</module>-->
