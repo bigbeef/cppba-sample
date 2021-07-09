@@ -30,20 +30,23 @@ public class Selenium {
      */
     @SneakyThrows
     public static void main(String[] args) {
-        Map<String, String> pointData = getPointDayData(DateUtil.parse("2021-07-01"), DateUtil.parse("2021-07-09"));
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.zq12369.com/environment.php?city=%E9%87%8D%E5%BA%86&tab=city");
+        
+        Map<String, String> pointData = getPointDayData(driver, DateUtil.parse("2021-07-01"), DateUtil.parse("2021-07-09"));
         System.out.println(pointData);
-//        String result = getPointHourData("棠香", DateUtil.parse("2021-07-08 22:00:25"), DateUtil.parse("2021-07-10 01:46:25"));
-//        System.out.println(result);
+        String result = getPointHourData(driver, "商业二路", DateUtil.parse("2021-01-01 00:00:00"), DateUtil.parse("2021-01-02 23:59:59"));
+        System.out.println(result);
+
+        driver.close();
     }
 
     /**
      * 获取站点时历史数据
      */
-    private static String getPointHourData(String pointName, Date startDate, Date endDate) {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.zq12369.com/environment.php?city=%E9%87%8D%E5%BA%86&tab=city");
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+    private static String getPointHourData(WebDriver driver, String pointName, Date startDate, Date endDate) {
 
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         Map obj = (Map) jsExecutor.executeScript("return {\n" +
                 "\t\tcity:city,\n" +
                 "    pointname:'" + pointName + "',\n" +
@@ -51,25 +54,21 @@ public class Selenium {
                 "    startTime:'" + DateUtil.format(startDate, DatePattern.NORM_DATETIME_FORMAT) + "',\n" +
                 "    endTime: '" + DateUtil.format(endDate, DatePattern.NORM_DATETIME_FORMAT) + "',\n" +
                 "\t}");
-        String param = (String) jsExecutor.executeScript("return getParam('GETCITYPOINTPERIOD',new Object(arguments[0]))", obj);
+        String param = (String) jsExecutor.executeScript("return getParam('GETCITYPOINTPERIOD',arguments[0])", obj);
 
         HashMap<String, Object> map = MapUtil.newHashMap();
         map.put("param", param);
         String post = HttpUtil.post("https://www.zq12369.com/api/newzhenqiapi.php", map);
-        String result = (String) jsExecutor.executeScript(" return decode_result('" + post + "')");
+        String result = (String) jsExecutor.executeScript(" return b.decode(decryptData('" + post + "'))");
         result = UnicodeUtil.toString(result);
-
-        driver.close();
         return result;
     }
 
     /**
      * 获取站点日历史数据
      */
-    private static Map<String, String> getPointDayData(Date startDate, Date endDate) {
+    private static Map<String, String> getPointDayData(WebDriver driver, Date startDate, Date endDate) {
         Map<String, String> resultMap = MapUtil.newHashMap();
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.zq12369.com/environment.php?city=%E9%87%8D%E5%BA%86&tab=city");
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 
         long between = DateUtil.between(startDate, endDate, DateUnit.DAY);
@@ -95,7 +94,6 @@ public class Selenium {
             result = UnicodeUtil.toString(result);
             resultMap.put(date, result);
         }
-        driver.close();
         return resultMap;
     }
 
