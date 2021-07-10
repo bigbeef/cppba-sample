@@ -30,15 +30,17 @@ public class Selenium {
      */
     @SneakyThrows
     public static void main(String[] args) {
+        System.setProperty("webdriver.chrome.driver", "D:/opt/chromedriver91/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        driver.get("https://www.zq12369.com/environment.php?city=%E9%87%8D%E5%BA%86&tab=city");
-        
-        Map<String, String> pointData = getPointDayData(driver, DateUtil.parse("2021-07-01"), DateUtil.parse("2021-07-09"));
-        System.out.println(pointData);
-        String result = getPointHourData(driver, "商业二路", DateUtil.parse("2021-01-01 00:00:00"), DateUtil.parse("2021-01-02 23:59:59"));
-        System.out.println(result);
-
-        driver.close();
+        try {
+            driver.get("https://www.zq12369.com/environment.php?city=%E9%87%8D%E5%BA%86&tab=city");
+            Map<String, String> pointData = getPointDayData(driver, DateUtil.parse("2021-07-01"), DateUtil.parse("2021-07-09"));
+            System.out.println(pointData);
+            String result = getPointHourData(driver, "商业二路", DateUtil.parse("2021-01-01 00:00:00"), DateUtil.parse("2021-01-02 23:59:59"));
+            System.out.println(result);
+        } finally {
+            driver.close();
+        }
     }
 
     /**
